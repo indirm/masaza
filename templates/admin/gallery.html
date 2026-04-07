@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Galerija</h1>
+  <p>Nalaganje in upravljanje fotografij</p>
+</div>
+<div class="form-card">
+  <h3>📤 Naloži fotografijo</h3>
+  <form method="POST" action="/admin/gallery/upload" enctype="multipart/form-data">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Fotografija (JPG, PNG, WEBP)</label>
+        <input type="file" name="photo" accept="image/*" required>
+      </div>
+      <div class="form-group">
+        <label>Opis slike (neobvezno)</label>
+        <input type="text" name="alt_text" placeholder="npr. Masažna soba">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold" style="margin-top:1rem;">Naloži</button>
+  </form>
+</div>
+<div class="form-card">
+  <h3>Fotografije ({{ photos|length }})</h3>
+  {% if photos %}
+  <div class="photo-grid">
+    {% for p in photos %}
+    <div class="photo-item">
+      <img src="/uploads/{{ p.filename }}" alt="{{ p.alt_text }}">
+      <form method="POST" action="/admin/gallery/{{ p.id }}/delete" onsubmit="return confirm('Izbriši fotografijo?')">
+        <button type="submit" class="photo-delete">🗑</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><div class="icon">🖼️</div><p>Še ni naloženih fotografij.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

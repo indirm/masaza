@@ -1,0 +1,98 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Nadzorna plošča</h1>
+  <p>Dobrodošli nazaj, Indir! Danes je {{ today.strftime('%A, %d. %m. %Y') }}</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="number">{{ pending_count }}</div>
+    <div class="label">Čaka na potrditev</div>
+  </div>
+  <div class="stat-card green">
+    <div class="number">{{ confirmed_count }}</div>
+    <div class="label">Potrjenih (prihodnje)</div>
+  </div>
+  <div class="stat-card gray">
+    <div class="number">{{ archived_count }}</div>
+    <div class="label">Arhiviranih</div>
+  </div>
+  <div class="stat-card blue">
+    <div class="number">{{ total_count }}</div>
+    <div class="label">Skupaj vseh</div>
+  </div>
+</div>
+
+<!-- Today -->
+<div class="table-wrapper">
+  <div class="table-header">
+    <h3>📅 Današnji termini</h3>
+    <span style="font-size:0.82rem;color:#aaa;">{{ today.strftime('%d.%m.%Y') }}</span>
+  </div>
+  {% if today_appts %}
+  <table>
+    <thead><tr><th>Ura</th><th>Stranka</th><th>Masaža</th><th>Telefon</th><th>Status</th><th>Dejanja</th></tr></thead>
+    <tbody>
+      {% for a in today_appts %}
+      <tr class="today-highlight">
+        <td><strong>{{ a.time_slot }}</strong></td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.massage.name_sl if a.massage else '—' }}</td>
+        <td><a href="tel:{{ a.phone }}" style="color:#c5a46d;">{{ a.phone }}</a></td>
+        <td><span class="badge badge-{{ a.status }}">{{ 'V čakanju' if a.status=='pending' else 'Potrjeno' }}</span></td>
+        <td>
+          {% if a.status == 'pending' %}
+          <button class="btn btn-green btn-sm" onclick="updateStatus({{ a.id }},'confirmed')">✓ Potrdi</button>
+          {% endif %}
+          <button class="btn btn-danger btn-sm" onclick="updateStatus({{ a.id }},'cancelled')">✗</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state"><div class="icon">☀️</div><p>Danes ni rezervacij.</p></div>
+  {% endif %}
+</div>
+
+<!-- Upcoming -->
+<div class="table-wrapper">
+  <div class="table-header">
+    <h3>📆 Prihajajoče rezervacije</h3>
+    <a href="/admin/appointments" class="btn btn-outline btn-sm">Vse rezervacije →</a>
+  </div>
+  {% if upcoming %}
+  <table>
+    <thead><tr><th>Datum</th><th>Ura</th><th>Stranka</th><th>Masaža</th><th>Status</th><th>Dejanja</th></tr></thead>
+    <tbody>
+      {% for a in upcoming %}
+      <tr>
+        <td>{{ a.date.strftime('%d.%m.%Y') }}</td>
+        <td>{{ a.time_slot }}</td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.massage.name_sl if a.massage else '—' }}</td>
+        <td><span class="badge badge-{{ a.status }}">{{ 'V čakanju' if a.status=='pending' else 'Potrjeno' }}</span></td>
+        <td>
+          {% if a.status == 'pending' %}
+          <button class="btn btn-green btn-sm" onclick="updateStatus({{ a.id }},'confirmed')">✓ Potrdi</button>
+          {% endif %}
+          <button class="btn btn-danger btn-sm" onclick="updateStatus({{ a.id }},'cancelled')">✗</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state"><div class="icon">🗓️</div><p>Ni prihodnjih rezervacij.</p></div>
+  {% endif %}
+</div>
+
+<script>
+function updateStatus(id, status) {
+  fetch(`/admin/appointment/${id}/status`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status})
+  }).then(() => location.reload());
+}
+</script>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Rezervacije</h1>
+  <p>Upravljanje vseh terminov</p>
+</div>
+
+<div class="filter-tabs">
+  <a href="?status=active" class="filter-tab {{ 'active' if status=='active' else '' }}">
+    Aktivne <span class="count">{{ counts.active }}</span></a>
+  <a href="?status=pending" class="filter-tab {{ 'active' if status=='pending' else '' }}">
+    V čakanju <span class="count">{{ counts.pending }}</span></a>
+  <a href="?status=confirmed" class="filter-tab {{ 'active' if status=='confirmed' else '' }}">
+    Potrjene <span class="count">{{ counts.confirmed }}</span></a>
+  <a href="?status=cancelled" class="filter-tab {{ 'active' if status=='cancelled' else '' }}">
+    Preklicane <span class="count">{{ counts.cancelled }}</span></a>
+  <a href="?status=archived" class="filter-tab {{ 'active' if status=='archived' else '' }}" style="{{ 'border-color:#9ca3af;' if status!='archived' else '' }}">
+    🗃️ Arhiv <span class="count">{{ counts.archived }}</span></a>
+</div>
+
+{% if status == 'archived' and appointments %}
+<div style="margin-bottom:1rem;text-align:right;">
+  <form method="POST" action="/admin/archive/clear" onsubmit="return confirm('Res želiš izbrisati celoten arhiv?')">
+    <button type="submit" class="btn btn-danger btn-sm">🗑 Izprazni arhiv</button>
+  </form>
+</div>
+{% endif %}
+
+<div class="table-wrapper">
+  {% if appointments %}
+  <table>
+    <thead>
+      <tr>
+        <th>Datum</th><th>Ura</th><th>Stranka</th><th>Masaža</th>
+        <th>Telefon</th><th>Opomba</th><th>Status</th><th>Dejanja</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in appointments %}
+      <tr id="row-{{ a.id }}">
+        <td>{{ a.date.strftime('%d.%m.%Y') }}</td>
+        <td><strong>{{ a.time_slot }}</strong></td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.massage.name_sl if a.massage else '—' }}</td>
+        <td><a href="tel:{{ a.phone }}" style="color:#c5a46d;">{{ a.phone }}</a></td>
+        <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ a.note or '' }}">{{ a.note or '—' }}</td>
+        <td>
+          <span class="badge badge-{{ a.status }}">
+            {{ 'V čakanju' if a.status=='pending' else 'Potrjeno' if a.status=='confirmed' else 'Preklicano' if a.status=='cancelled' else 'Arhivirano' }}
+          </span>
+        </td>
+        <td style="white-space:nowrap;display:flex;gap:0.3rem;flex-wrap:wrap;">
+          {% if a.status == 'pending' %}
+            <button class="btn btn-green btn-sm" onclick="updateStatus({{ a.id }},'confirmed')">✓ Potrdi</button>
+            <button class="btn btn-danger btn-sm" onclick="updateStatus({{ a.id }},'cancelled')">✗</button>
+          {% elif a.status == 'confirmed' %}
+            <button class="btn btn-danger btn-sm" onclick="updateStatus({{ a.id }},'cancelled')">✗ Prekliči</button>
+            <button class="btn btn-outline btn-sm" onclick="updateStatus({{ a.id }},'archived')">🗃</button>
+          {% elif a.status == 'cancelled' %}
+            <button class="btn btn-outline btn-sm" onclick="updateStatus({{ a.id }},'pending')">↩ Obnovi</button>
+          {% elif a.status == 'archived' %}
+            <button class="btn btn-outline btn-sm" onclick="updateStatus({{ a.id }},'confirmed')">↩ Obnovi</button>
+          {% endif %}
+          <form method="POST" action="/admin/appointment/{{ a.id }}/delete?status={{ status }}" style="display:inline" onsubmit="return confirm('Izbriši to rezervacijo?')">
+            <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <div class="icon">{{ '🗃️' if status=='archived' else '📅' }}</div>
+    <p>{{ 'Arhiv je prazen.' if status=='archived' else 'Ni rezervacij v tej kategoriji.' }}</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+function updateStatus(id, status) {
+  fetch(`/admin/appointment/${id}/status`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status})
+  }).then(r => r.json()).then(d => { if(d.success) location.reload(); });
+}
+</script>
+{% endblock %}

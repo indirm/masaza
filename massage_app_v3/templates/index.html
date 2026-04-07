@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masaža Indir Mujić</title>
+  <meta name="description" content="Profesionalna masaža v Kranju, Slovenija.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+  <div class="custom-cursor" id="cursor"></div>
+
+  <div class="top-right-controls">
+    <div class="language-selector">
+      <button onclick="setLanguage('de')">DE</button>
+      <button onclick="setLanguage('en')">EN</button>
+      <button onclick="setLanguage('sl')">SL</button>
+    </div>
+    <div class="theme-switcher">
+      <button onclick="toggleTheme()">🌙 / ☀️</button>
+    </div>
+  </div>
+
+  <div class="sidebar-toggle" onclick="toggleSidebar()">&#9664;</div>
+  <div class="sidebar-hours">
+    <h4 data-lang-de="Öffnungszeiten" data-lang-en="Working Hours" data-lang-sl="Delovni čas">Delovni čas</h4>
+    {% for h in hours %}
+    <p data-lang-de="{{ h.day_de }}: {{ h.open_time + '–' + h.close_time if h.is_open else 'Geschlossen' }}"
+       data-lang-en="{{ h.day_en }}: {{ h.open_time + '–' + h.close_time if h.is_open else 'Closed' }}"
+       data-lang-sl="{{ h.day_sl }}: {{ h.open_time + '–' + h.close_time if h.is_open else 'Zaprto' }}">
+      {{ h.day_sl }}: {{ h.open_time + '–' + h.close_time if h.is_open else 'Zaprto' }}
+    </p>
+    {% endfor %}
+  </div>
+
+  <header>
+    <h1 data-lang-de="Massage Indir Mujić" data-lang-en="Massage Indir Mujić" data-lang-sl="Masaža Indir Mujić">Masaža Indir Mujić</h1>
+    <p class="hero-tagline" data-lang-de="Entspannen • Heilen • Gleichgewicht wiederherstellen" data-lang-en="Relax • Heal • Restore Your Balance" data-lang-sl="Sprostite se • Ozdravite • Obnovite ravnotežje">Sprostite se • Ozdravite • Obnovite ravnotežje</p>
+    <div class="scroll-indicator">
+      <span data-lang-de="Scrollen" data-lang-en="Scroll" data-lang-sl="Pomakni se">Pomakni se</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </header>
+
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <nav>
+    <a href="#about" data-lang-de="Über Uns" data-lang-en="About" data-lang-sl="O nas">O nas</a>
+    <a href="#services" data-lang-de="Leistungen" data-lang-en="Services" data-lang-sl="Storitve">Storitve</a>
+    <a href="#why" data-lang-de="Warum wählen" data-lang-en="Why Us" data-lang-sl="Zakaj mi">Zakaj mi</a>
+    <a href="#gallery" data-lang-de="Galerie" data-lang-en="Gallery" data-lang-sl="Galerija">Galerija</a>
+    <a href="#reviews" data-lang-de="Bewertungen" data-lang-en="Reviews" data-lang-sl="Mnenja">Mnenja</a>
+    <a href="#booking" data-lang-de="Buchen" data-lang-en="Book" data-lang-sl="Rezervacija">Rezervacija</a>
+    <a href="#contact" data-lang-de="Kontakt" data-lang-en="Contact" data-lang-sl="Kontakt">Kontakt</a>
+  </nav>
+
+  <!-- Floating Book Button -->
+  <a href="#booking" class="book-btn" data-lang-de="Jetzt Buchen" data-lang-en="Book Now" data-lang-sl="Rezerviraj">Rezerviraj</a>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" data-target="500">0</span>
+      <span class="stat-label" data-lang-de="Zufriedene Kunden" data-lang-en="Happy Clients" data-lang-sl="Zadovoljnih strank">Zadovoljnih strank</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="5">0</span>
+      <span class="stat-label" data-lang-de="Jahre Erfahrung" data-lang-en="Years Experience" data-lang-sl="Let izkušenj">Let izkušenj</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="{{ massages|length }}">0</span>
+      <span class="stat-label" data-lang-de="Massage-Typen" data-lang-en="Massage Types" data-lang-sl="Vrste masaž">Vrste masaž</span>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <h2 data-lang-de="Über Indir" data-lang-en="About Indir" data-lang-sl="O Indiru">O Indiru</h2>
+    <div class="about-container">
+      <div class="about-photo">
+        <img src="{{ url_for('static', filename='images/selfie.jfif') }}" alt="Indir Mujić" loading="lazy" onerror="this.src='https://via.placeholder.com/220x220?text=Indir'">
+        <div class="about-badge" data-lang-de="Zertifizierter Masseur" data-lang-en="Certified Masseur" data-lang-sl="Certificirani maser">Certificirani maser</div>
+      </div>
+      <div class="about-text">
+        <p data-lang-de="Indir Mujić verfügt über jahrelange Erfahrung in professioneller Massage."
+           data-lang-en="Indir Mujić brings years of experience in professional massage. Each session restores balance, improves circulation, and relieves stress."
+           data-lang-sl="Indir Mujić ima večletne izkušnje s profesionalno masažo. Vsaka seja je zasnovana tako, da obnovi vaše ravnotežje, izboljša prekrvavitev in zmanjša stres.">
+          Indir Mujić ima večletne izkušnje s profesionalno masažo. Vsaka seja je zasnovana tako, da obnovi vaše ravnotežje, izboljša prekrvavitev in zmanjša stres.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="parallax-strip">
+    <div class="parallax-content">
+      <p class="parallax-quote" data-lang-de="„Echte Erholung beginnt hier."" data-lang-en="„True recovery starts here."" data-lang-sl="„Pravo okrevanje se začne tukaj."">„Pravo okrevanje se začne tukaj."</p>
+      <p class="parallax-sub" data-lang-de="Professionelle Massage in Kranj" data-lang-en="Professional Massage in Kranj" data-lang-sl="Profesionalna masaža v Kranju">Profesionalna masaža v Kranju</p>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <h2 data-lang-de="Unsere Leistungen" data-lang-en="Our Services" data-lang-sl="Naše storitve">Naše storitve</h2>
+    <div class="services">
+      {% set icons = ['🤲', '⚡', '🩺', '💆', '🌿', '✨'] %}
+      {% for m in massages %}
+      <div class="card">
+        <div class="card-icon">{{ icons[loop.index0 % icons|length] }}</div>
+        <h3 data-lang-de="{{ m.name_de }}" data-lang-en="{{ m.name_en }}" data-lang-sl="{{ m.name_sl }}">{{ m.name_sl }}</h3>
+        <p data-lang-de="{{ m.desc_de }}" data-lang-en="{{ m.desc_en }}" data-lang-sl="{{ m.desc_sl }}">{{ m.desc_sl }}</p>
+        <p><strong>{{ m.duration }} min - €{{ "%.0f"|format(m.price) }}</strong></p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section id="why">
+    <h2 data-lang-de="Warum uns wählen" data-lang-en="Why Choose Us" data-lang-sl="Zakaj izbrati nas">Zakaj izbrati nas</h2>
+    <div class="why-container">
+      <div class="why-card">
+        <div class="card-icon">🏆</div>
+        <h3 data-lang-de="Professionell" data-lang-en="Professional" data-lang-sl="Strokovno">Strokovno</h3>
+        <p data-lang-de="Erfahrung und Fachwissen für beste Ergebnisse." data-lang-en="Experience and expertise for the best results." data-lang-sl="Izkušnje in strokovno znanje za najboljše rezultate.">Izkušnje in strokovno znanje za najboljše rezultate.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">✨</div>
+        <h3 data-lang-de="Individuell" data-lang-en="Personalized" data-lang-sl="Prilagojeno">Prilagojeno</h3>
+        <p data-lang-de="Jede Massage auf Ihre Bedürfnisse abgestimmt." data-lang-en="Each massage tailored to your needs." data-lang-sl="Vsaka masaža je prilagojena vašim potrebam.">Vsaka masaža je prilagojena vašim potrebam.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">🌿</div>
+        <h3 data-lang-de="Entspannend" data-lang-en="Relaxing" data-lang-sl="Sproščujoče">Sproščujoče</h3>
+        <p data-lang-de="Unsere Massagen helfen Körper und Geist zu entspannen." data-lang-en="Our massages help relax both body and mind." data-lang-sl="Naše masaže pomagajo sprostiti telo in um.">Naše masaže pomagajo sprostiti telo in um.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery">
+    <h2 data-lang-de="Galerie" data-lang-en="Gallery" data-lang-sl="Galerija">Galerija</h2>
+    <div class="gallery">
+      {% if photos %}
+        {% for p in photos %}
+        <img src="{{ url_for('uploaded_file', filename=p.filename) }}" alt="{{ p.alt_text }}" loading="lazy">
+        {% endfor %}
+      {% else %}
+        <img src="{{ url_for('static', filename='images/massage-room-600px.jpg') }}" alt="Massage room" loading="lazy" onerror="this.style.display='none'">
+        <img src="{{ url_for('static', filename='images/massage.webp') }}" alt="Massage oils" loading="lazy" onerror="this.style.display='none'">
+        <img src="{{ url_for('static', filename='images/masser.jpg') }}" alt="Massage" loading="lazy" onerror="this.style.display='none'">
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section id="reviews">
+    <h2 data-lang-de="Bewertungen" data-lang-en="Reviews" data-lang-sl="Mnenja">Mnenja</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        <div class="review">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p data-lang-de="„Indir hat ein wahres Talent. Die Massage hat mich völlig erneuert."" data-lang-en=""Indir has a true gift. The massage left me completely renewed."" data-lang-sl="„Indir ima pravi talent. Masaža me je popolnoma obnovila."">„Indir ima pravi talent. Masaža me je popolnoma obnovila."</p>
+          <strong>- Sara, Kranj</strong>
+        </div>
+        <div class="review">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p data-lang-de="„Professionell, entspannend und genau das, was ich nach dem Training brauchte."" data-lang-en=""Professional, relaxing, exactly what I needed after training."" data-lang-sl="„Strokovno, sproščujoče in točno tisto, kar sem potreboval po treningu."">„Strokovno, sproščujoče in točno tisto, kar sem potreboval po treningu."</p>
+          <strong>- Marko, Ljubljana</strong>
+        </div>
+        <div class="review">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p data-lang-de="„Die beste Massage-Erfahrung in Slowenien. Sehr zu empfehlen!"" data-lang-en=""The best massage experience in Slovenia. Highly recommended!"" data-lang-sl="„Najboljša masažna izkušnja v Sloveniji. Zelo priporočljivo!"">„Najboljša masažna izkušnja v Sloveniji. Zelo priporočljivo!"</p>
+          <strong>- Ivana, Jesenice</strong>
+        </div>
+      </div>
+      <div class="carousel-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking -->
+  <section id="booking">
+    <h2 data-lang-de="Termin buchen" data-lang-en="Book Appointment" data-lang-sl="Rezerviraj termin">Rezerviraj termin</h2>
+    <div class="booking-form-wrapper">
+      <div class="booking-step" id="step1">
+        <h3 data-lang-de="1. Massage wählen" data-lang-en="1. Choose Massage" data-lang-sl="1. Izberi masažo">1. Izberi masažo</h3>
+        <div class="massage-options">
+          {% for m in massages %}
+          <label class="massage-option">
+            <input type="radio" name="massage" value="{{ m.id }}" data-price="{{ m.price }}" data-duration="{{ m.duration }}">
+            <div class="massage-option-card">
+              <strong data-lang-de="{{ m.name_de }}" data-lang-en="{{ m.name_en }}" data-lang-sl="{{ m.name_sl }}">{{ m.name_sl }}</strong>
+              <span>{{ m.duration }} min · €{{ "%.0f"|format(m.price) }}</span>
+            </div>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="booking-step" id="step2">
+        <h3 data-lang-de="2. Datum wählen" data-lang-en="2. Choose Date" data-lang-sl="2. Izberi datum">2. Izberi datum</h3>
+        <input type="date" id="booking-date" min="{{ now }}" class="booking-input">
+      </div>
+
+      <div class="booking-step" id="step3">
+        <h3 data-lang-de="3. Uhrzeit wählen" data-lang-en="3. Choose Time" data-lang-sl="3. Izberi uro">3. Izberi uro</h3>
+        <div class="time-slots" id="time-slots">
+          <p class="slots-hint" data-lang-de="Wählen Sie zuerst Datum und Massage" data-lang-en="Select date and massage first" data-lang-sl="Najprej izberi datum in masažo">Najprej izberi datum in masažo</p>
+        </div>
+      </div>
+
+      <div class="booking-step" id="step4">
+        <h3 data-lang-de="4. Ihre Daten" data-lang-en="4. Your Details" data-lang-sl="4. Vaši podatki">4. Vaši podatki</h3>
+        <div class="booking-fields">
+          <input type="text" id="b-name" placeholder="Ime in priimek *" class="booking-input" data-lang-placeholder-de="Name und Nachname *" data-lang-placeholder-en="Full name *" data-lang-placeholder-sl="Ime in priimek *">
+          <input type="tel" id="b-phone" placeholder="Telefon *" class="booking-input">
+          <input type="email" id="b-email" placeholder="E-pošta (neobvezno)" class="booking-input" data-lang-placeholder-de="E-Mail (optional)" data-lang-placeholder-en="Email (optional)" data-lang-placeholder-sl="E-pošta (neobvezno)">
+          <textarea id="b-note" placeholder="Opomba (neobvezno)" class="booking-input" rows="3" data-lang-placeholder-de="Anmerkung (optional)" data-lang-placeholder-en="Note (optional)" data-lang-placeholder-sl="Opomba (neobvezno)"></textarea>
+        </div>
+      </div>
+
+      <div class="booking-summary" id="booking-summary" style="display:none">
+        <h4 data-lang-de="Zusammenfassung" data-lang-en="Summary" data-lang-sl="Povzetek">Povzetek</h4>
+        <p id="summary-text"></p>
+      </div>
+
+      <button class="book-submit-btn" onclick="submitBooking()" data-lang-de="Termin bestätigen" data-lang-en="Confirm Booking" data-lang-sl="Potrdi rezervacijo">Potrdi rezervacijo</button>
+      <div id="booking-msg" class="booking-msg"></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2 data-lang-de="Kontakt" data-lang-en="Contact" data-lang-sl="Kontakt">Kontakt</h2>
+    <p><strong data-lang-de="Telefon" data-lang-en="Phone" data-lang-sl="Telefon">Telefon:</strong> <a href="tel:{{ phone }}">{{ phone }}</a></p>
+    <p><strong data-lang-de="Email" data-lang-en="Email" data-lang-sl="E-pošta">E-pošta:</strong> <a href="mailto:{{ email }}">{{ email }}</a></p>
+    <p><strong data-lang-de="Ort" data-lang-en="Location" data-lang-sl="Lokacija">Lokacija:</strong> Kranj, Slovenija</p>
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.474953187142!2d14.3556!3d46.2428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476532f9e0bdf8f5%3A0xd29e3e4b0705a6!2sKranj!5e0!3m2!1sen!2ssi!4v1694700000000" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <p class="footer-logo">Masaža Indir Mujić</p>
+        <p class="footer-tagline">Sprostitev • Zdravljenje • Okrevanje</p>
+      </div>
+      <div class="footer-links">
+        <a href="#about" data-lang-de="Über Uns" data-lang-en="About" data-lang-sl="O nas">O nas</a>
+        <a href="#services" data-lang-de="Leistungen" data-lang-en="Services" data-lang-sl="Storitve">Storitve</a>
+        <a href="#booking" data-lang-de="Buchen" data-lang-en="Book" data-lang-sl="Rezervacija">Rezervacija</a>
+        <a href="#contact" data-lang-de="Kontakt" data-lang-en="Contact" data-lang-sl="Kontakt">Kontakt</a>
+      </div>
+      <div class="footer-social">
+        <a href="#" class="social-btn">📸 Instagram</a>
+        <a href="#" class="social-btn">👥 Facebook</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Masaža Indir Mujić • All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Language ──
+    function setLanguage(lang) {
+      document.querySelectorAll('[data-lang-de]').forEach(el => {
+        el.textContent = el.getAttribute('data-lang-' + lang) || el.textContent;
+      });
+      document.querySelectorAll('[data-lang-placeholder-sl]').forEach(el => {
+        el.placeholder = el.getAttribute('data-lang-placeholder-' + lang) || el.placeholder;
+      });
+      localStorage.setItem('language', lang);
+    }
+
+    // ── Theme ──
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    }
+    function applyTheme(t) {
+      document.body.classList.toggle('dark-theme', t === 'dark');
+    }
+    applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    setLanguage(localStorage.getItem('language') || 'sl');
+
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .card, .why-card, .gallery img, .dot, .massage-option-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    // ── Sidebar ──
+    const sidebar = document.querySelector('.sidebar-hours');
+    function toggleSidebar() {
+      const btn = document.querySelector('.sidebar-toggle');
+      sidebar.classList.toggle('show');
+      btn.innerHTML = sidebar.classList.contains('show') ? '&#9664;' : '&#9654;';
+    }
+    document.addEventListener('click', e => {
+      const btn = document.querySelector('.sidebar-toggle');
+      if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
+        if (!sidebar.contains(e.target) && e.target !== btn) {
+          sidebar.classList.remove('show');
+          btn.innerHTML = '&#9654;';
+        }
+      }
+    });
+
+    // ── Scroll ──
+    function handleScroll() {
+      const nav = document.querySelector('nav');
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+      if (window.innerWidth > 768) {
+        sidebar.classList.toggle('show', window.scrollY > 50);
+        document.querySelector('.sidebar-toggle').innerHTML = sidebar.classList.contains('show') ? '&#9664;' : '&#9654;';
+      } else {
+        const atTop = window.scrollY < 50;
+        document.querySelector('.hamburger').classList.toggle('hidden', atTop);
+        document.querySelector('.top-right-controls').classList.toggle('hidden', atTop);
+        document.querySelector('.sidebar-toggle').classList.toggle('hidden', atTop);
+      }
+      updateActiveNav();
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // ── Nav ──
+    function toggleMenu() { document.querySelector('nav').classList.toggle('show'); }
+    document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => document.querySelector('nav').classList.remove('show')));
+
+    function updateActiveNav() {
+      let current = '';
+      document.querySelectorAll('section[id]').forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      document.querySelectorAll('nav a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+
+    // ── Reveal ──
+    document.querySelectorAll('.card, .why-card, .gallery img, .about-container, .stat-item').forEach(el => el.classList.add('reveal'));
+    new IntersectionObserver((entries, obs) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 120); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 }).observe = (() => {
+      const o = new IntersectionObserver((entries, obs) => {
+        entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 100); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => o.observe(el));
+    })();
+
+    // ── Stats ──
+    const statsObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target, target = +el.dataset.target;
+          let cur = 0; const step = target / 90;
+          const t = setInterval(() => { cur += step; if (cur >= target) { el.textContent = target + '+'; clearInterval(t); } else el.textContent = Math.floor(cur); }, 16);
+          statsObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-number').forEach(c => statsObs.observe(c));
+
+    // ── Carousel ──
+    let slide = 0;
+    const track = document.querySelector('.carousel-track');
+    const dots = document.querySelectorAll('.dot');
+    function goToSlide(i) { slide = i; track.style.transform = `translateX(-${i*100}%)`; dots.forEach((d,j) => d.classList.toggle('active', j===i)); }
+    setInterval(() => goToSlide((slide + 1) % dots.length), 4000);
+
+    // ── Booking ──
+    let selectedMassage = null, selectedDate = null, selectedSlot = null;
+
+    document.querySelectorAll('input[name="massage"]').forEach(r => {
+      r.addEventListener('change', () => { selectedMassage = r.value; fetchSlots(); updateSummary(); });
+    });
+
+    document.getElementById('booking-date').addEventListener('change', e => {
+      selectedDate = e.target.value; fetchSlots(); updateSummary();
+    });
+
+    function fetchSlots() {
+      if (!selectedMassage || !selectedDate) return;
+      const container = document.getElementById('time-slots');
+      container.innerHTML = '<p>Nalagam...</p>';
+      fetch(`/api/available-slots?date=${selectedDate}&massage_id=${selectedMassage}`)
+        .then(r => r.json())
+        .then(slots => {
+          selectedSlot = null;
+          if (!slots.length) {
+            container.innerHTML = '<p style="color:#c5a46d">Ni prostih terminov ta dan.</p>';
+            return;
+          }
+          container.innerHTML = slots.map(s =>
+            `<button class="slot-btn" onclick="selectSlot('${s}', this)">${s}</button>`
+          ).join('');
+        });
+    }
+
+    function selectSlot(slot, btn) {
+      selectedSlot = slot;
+      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const summary = document.getElementById('booking-summary');
+      const text = document.getElementById('summary-text');
+      if (selectedMassage && selectedDate && selectedSlot) {
+        const radio = document.querySelector(`input[name="massage"][value="${selectedMassage}"]`);
+        const card = radio.nextElementSibling.querySelector('strong');
+        summary.style.display = 'block';
+        text.textContent = `${card.textContent} · ${selectedDate} · ${selectedSlot}`;
+      } else {
+        summary.style.display = 'none';
+      }
+    }
+
+    function submitBooking() {
+      const name = document.getElementById('b-name').value.trim();
+      const phone = document.getElementById('b-phone').value.trim();
+      const email = document.getElementById('b-email').value.trim();
+      const note = document.getElementById('b-note').value.trim();
+      const msg = document.getElementById('booking-msg');
+
+      if (!name || !phone || !selectedMassage || !selectedDate || !selectedSlot) {
+        msg.textContent = 'Prosim izpolni vsa obvezna polja in izberi termin.';
+        msg.className = 'booking-msg error';
+        return;
+      }
+
+      fetch('/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, note, massage_id: selectedMassage, date: selectedDate, time_slot: selectedSlot })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          msg.textContent = '✅ Rezervacija uspešna! Kontaktirali vas bomo za potrditev.';
+          msg.className = 'booking-msg success';
+          selectedSlot = null; selectedDate = null; selectedMassage = null;
+          document.getElementById('booking-date').value = '';
+          document.getElementById('b-name').value = '';
+          document.getElementById('b-phone').value = '';
+          document.getElementById('b-email').value = '';
+          document.getElementById('b-note').value = '';
+          document.querySelectorAll('input[name="massage"]').forEach(r => r.checked = false);
+          document.getElementById('time-slots').innerHTML = '<p class="slots-hint">Najprej izberi datum in masažo</p>';
+          document.getElementById('booking-summary').style.display = 'none';
+        } else {
+          msg.textContent = data.error || 'Napaka. Poskusi znova.';
+          msg.className = 'booking-msg error';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

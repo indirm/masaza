@@ -1,0 +1,26 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Nastavitve</h1>
+  <p>Kontaktni podatki in varnost</p>
+</div>
+<div class="form-card" style="max-width:580px;">
+  <form method="POST">
+    <h3>📞 Kontaktni podatki</h3>
+    <div class="form-group" style="margin-bottom:1rem;">
+      <label>Telefonska številka</label>
+      <input type="text" name="phone" value="{{ phone }}" placeholder="+386 40 123 456">
+    </div>
+    <div class="form-group" style="margin-bottom:2rem;">
+      <label>E-poštni naslov</label>
+      <input type="email" name="email" value="{{ email }}" placeholder="info@primer.com">
+    </div>
+    <h3>🔒 Sprememba gesla</h3>
+    <div class="form-group" style="margin-bottom:1.5rem;">
+      <label>Novo geslo (pustite prazno, če ne želite spremeniti)</label>
+      <input type="password" name="new_password" placeholder="••••••••">
+    </div>
+    <button type="submit" class="btn btn-gold">💾 Shrani nastavitve</button>
+  </form>
+</div>
+{% endblock %}

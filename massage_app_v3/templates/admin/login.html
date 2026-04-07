@@ -1,0 +1,23 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div style="max-width:400px;margin:5rem auto;">
+  <div class="form-card">
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div style="font-size:2.5rem;">💆</div>
+      <h2 style="color:#c5a46d;margin-top:0.5rem;">Admin prijava</h2>
+      <p style="color:#aaa;font-size:0.85rem;">Masaža Indir Mujić</p>
+    </div>
+    <form method="POST">
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label>Uporabniško ime</label>
+        <input type="text" name="username" required autofocus placeholder="admin">
+      </div>
+      <div class="form-group" style="margin-bottom:1.5rem;">
+        <label>Geslo</label>
+        <input type="password" name="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-gold" style="width:100%;padding:0.8rem;font-size:0.95rem;justify-content:center;">Prijava</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

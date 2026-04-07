@@ -1,0 +1,63 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Masaže</h1>
+  <p>Upravljanje vrst masaž, opisov in cen</p>
+</div>
+
+<div class="form-card">
+  <h3>➕ Dodaj novo masažo</h3>
+  <form method="POST" action="/admin/massages/add">
+    <div class="form-grid">
+      <div class="form-group"><label>Ime (SL) *</label><input name="name_sl" required placeholder="npr. Sprostitvena masaža"></div>
+      <div class="form-group"><label>Trajanje (min)</label><input name="duration" type="number" value="60" min="15" required></div>
+      <div class="form-group"><label>Cena (€) *</label><input name="price" type="number" step="0.01" min="0" required placeholder="40"></div>
+    </div>
+    <div class="form-group" style="margin-top:1rem;"><label>Opis (SL)</label><textarea name="desc_sl" rows="2" placeholder="Kratek opis masaže..."></textarea></div>
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer;color:#aaa;font-size:0.82rem;user-select:none;">▸ Prevodi (DE / EN) — neobvezno</summary>
+      <div class="form-grid" style="margin-top:1rem;">
+        <div class="form-group"><label>Ime (DE)</label><input name="name_de" placeholder="Entspannungsmassage"></div>
+        <div class="form-group"><label>Ime (EN)</label><input name="name_en" placeholder="Relaxing Massage"></div>
+        <div class="form-group"><label>Opis (DE)</label><textarea name="desc_de" rows="2"></textarea></div>
+        <div class="form-group"><label>Opis (EN)</label><textarea name="desc_en" rows="2"></textarea></div>
+      </div>
+    </details>
+    <button type="submit" class="btn btn-gold" style="margin-top:1.2rem;">Dodaj masažo</button>
+  </form>
+</div>
+
+{% for m in massages %}
+<div class="form-card" style="border-left:3px solid {{ '#c5a46d' if m.active else '#e5e7eb' }};">
+  <form method="POST" action="/admin/massages/{{ m.id }}/edit">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;">
+      <h3 style="border:none;padding:0;margin:0;">{{ m.name_sl }} {% if not m.active %}<span style="color:#aaa;font-size:0.8rem;">(neaktivna)</span>{% endif %}</h3>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <label style="font-size:0.82rem;color:#888;display:flex;align-items:center;gap:0.4rem;cursor:pointer;">
+          <input type="checkbox" name="active" {{ 'checked' if m.active }}> Aktivna
+        </label>
+        <button type="submit" class="btn btn-gold btn-sm">💾 Shrani</button>
+        <form method="POST" action="/admin/massages/{{ m.id }}/delete" style="display:inline" onsubmit="return confirm('Izbriši to masažo?')">
+          <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+        </form>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label>Ime (SL) *</label><input name="name_sl" value="{{ m.name_sl }}" required></div>
+      <div class="form-group"><label>Trajanje (min)</label><input name="duration" type="number" value="{{ m.duration }}" min="15" required></div>
+      <div class="form-group"><label>Cena (€) *</label><input name="price" type="number" step="0.01" value="{{ m.price }}" min="0" required></div>
+    </div>
+    <div class="form-group" style="margin-top:1rem;"><label>Opis (SL)</label><textarea name="desc_sl" rows="2">{{ m.desc_sl or '' }}</textarea></div>
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer;color:#aaa;font-size:0.82rem;user-select:none;">▸ Prevodi (DE / EN)</summary>
+      <div class="form-grid" style="margin-top:1rem;">
+        <div class="form-group"><label>Ime (DE)</label><input name="name_de" value="{{ m.name_de or '' }}"></div>
+        <div class="form-group"><label>Ime (EN)</label><input name="name_en" value="{{ m.name_en or '' }}"></div>
+        <div class="form-group"><label>Opis (DE)</label><textarea name="desc_de" rows="2">{{ m.desc_de or '' }}</textarea></div>
+        <div class="form-group"><label>Opis (EN)</label><textarea name="desc_en" rows="2">{{ m.desc_en or '' }}</textarea></div>
+      </div>
+    </details>
+  </form>
+</div>
+{% endfor %}
+{% endblock %}
